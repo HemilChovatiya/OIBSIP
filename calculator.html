@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Calculator</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<style>
+    * {
+  background-color: rgba(77, 139, 200, 255);
+}
+.calculator {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: [first] 30px [second] 40px;
+  gap: 10px;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: rgba(233, 245, 255, 255);
+}
+
+#history {
+  grid-row: 1/2;
+  background-color: rgba(203, 229, 254, 255);
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  text-align: left;
+  font-size: 18px;
+}
+#display {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  color: rgba(94, 145, 205, 255);
+}
+input[type="text"] {
+  font-size: 35px;
+  grid-column: 1 / -1;
+  background-color: rgba(203, 229, 254, 255);
+  border: none;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: right;
+}
+.operator,
+.dot,
+#del,
+#clear,
+#ans,
+#sr {
+  background-color: rgba(163, 208, 250, 255);
+}
+
+.number {
+  font-weight: bold;
+  color: rgba(17, 52, 89, 255);
+}
+
+#Enter {
+  color: white;
+  grid-column: 4 / -1;
+  font-size: 18px;
+  background-color: rgba(77, 139, 200, 255);
+}
+button {
+  padding: 10px;
+  margin: 2px;
+  font-size: 18px;
+  color: rgba(94, 145, 205, 255);
+  background-color: rgba(202, 229, 255, 255);
+  border: none;
+  border-radius: 10px;
+}
+
+</style>
+<body>
+  <div class="calculator">
+    <input type="text" id="history" disabled>
+    <input type="text" id="display" disabled>
+    <button class="operator">(</button>
+    <button class="operator">)</button>
+    <button id='ans'>ans</button>
+    <button id="del">del</button>
+    <button id="clear">clear</button>
+    <button class="number">7</button>
+    <button class="number">8</button>
+    <button class="number">9</button>
+    <button class="operator">%</button>
+    <button id="sr" onclick="calculateSquareRoot()">√</button>
+    <button class="number">4</button>
+    <button class="number">5</button>
+    <button class="number">6</button>
+    <button class="operator">*</button>
+    <!--x-->
+    <button class="operator">/</button>
+    <!--÷-->
+    <button class="number">1</button>
+    <button class="number">2</button>
+    <button class="number">3</button>
+    <button class="operator">+</button>
+    <button class="operator">-</button>
+    <button class="operator">.</button>
+    <button class="number">0</button>
+    <button class="operator">±</button>
+    <button class="Enter" id='Enter'>ENTER</button>
+  </div>
+  <script>
+    // Get references to the display screen and buttons
+const display = document.getElementById("display");
+const numberButtons = document.querySelectorAll(".number");
+const operatorButtons = document.querySelectorAll(".operator");
+const equalsButton = document.getElementById("Enter");
+const clearButton = document.getElementById("clear");
+const deleteButton = document.getElementById("del");
+const ansButton = document.getElementById("ans");
+const squareRootButton = document.getElementById("sr");
+const his = document.getElementById("history");
+let prevresult = "";
+let prevhistory = "";
+const number = "";
+const squareRoot = "";
+
+// Add click event listeners to number buttons
+numberButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    display.value += button.textContent;
+  });
+});
+// Add click event listeners to operator buttons
+operatorButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    display.value += button.textContent;
+  });
+});
+
+function calculateSquareRoot() {
+  var display = document.getElementById("display");
+  var expression = display.value;
+
+  if (isValidNumber(expression)) {
+    var number = parseFloat(expression);
+    var squareRoot = Math.sqrt(number);
+
+    prevhistory = "√" + display.value;
+    display.value = squareRoot;
+    prevresult = eval(display.value);
+    his.value = prevhistory;
+  } else {
+    display.value = "Invalid Input";
+  }
+}
+
+function isValidNumber(value) {
+  return !isNaN(parseFloat(value)) && isFinite(value);
+}
+
+// Add click event listener to equals button
+equalsButton.addEventListener("click", () => {
+  prevhistory = display.value;
+  display.value = eval(display.value);
+  prevresult = eval(display.value);
+  his.value = prevhistory;
+});
+
+// Add click event listener to clear button
+clearButton.addEventListener("click", () => {
+  display.value = "";
+});
+
+// Add click event listener to delete button
+deleteButton.addEventListener("click", () => {
+  display.value = display.value.slice(0, -1);
+});
+
+// Add click event listener to ans button
+ansButton.addEventListener("click", () => {
+  display.value = "ans = " + eval(display.value);
+});
+
+  </script>
+</body>
+
+</html>
